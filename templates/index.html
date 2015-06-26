@@ -26,7 +26,7 @@
             url: "{{ url_for("classify") }}",
             data: form.serialize(),
             success: function (data) {
-                result_element.text(JSON.stringify(data, null, 4));
+                result_element.text(JSON.stringify(JSON.parse(data), null, 4));
             }
         });
         return false;

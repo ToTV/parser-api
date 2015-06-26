@@ -3,10 +3,22 @@
 
 """
 from __future__ import unicode_literals, absolute_import
+from datetime import datetime
 from enum import Enum
+import json
+
 from flask import Flask, request, jsonify, render_template
 from wtforms import Form, StringField, validators, SelectField
 import guessit
+
+def json_serial(obj):
+    """JSON serializer for objects not serializable by default json code"""
+
+    if isinstance(obj, datetime):
+        serial = obj.isoformat()
+        return serial
+    else:
+        return str(obj)
 
 
 class MediaTypes(Enum):
@@ -26,7 +38,7 @@ class ClassifyForm(Form):
 
 app = Flask("parser")
 app.config['DEBUG'] = True
-
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 @app.route("/", methods=["GET"])
 def index():
@@ -47,7 +59,11 @@ def classify():
             data = guessit.guess_episode_info(release_name, {})
         else:
             data = guessit.guess_movie_info(release_name, {})
-        return jsonify(data)
+        try:
+            jsonify()
+            return json.dumps(data, default=json_serial)
+        except Exception as err:
+            return json.dumps({"err": str(err)}, default=json_serial)
 
 
 if __name__ == "__main__":
