@@ -25,6 +25,7 @@ class ClassifyForm(Form):
 
 
 app = Flask("parser")
+app.config['DEBUG'] = True
 
 
 @app.route("/", methods=["GET"])
