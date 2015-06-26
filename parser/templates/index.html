@@ -3,36 +3,34 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title></title>
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js" ></script>
+    <title>ToTV Parser Release Parser</title>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 </head>
 <body>
 <form method=post action="{{ url_for("classify") }}" id="hi">
-  <dl>
-    {{ render_field(form.release_name) }}
-    {{ render_field(form.media_type) }}
-  </dl>
-  <p><input type=submit value=Parse>
+    <dl>
+        {{ render_field(form.release_name) }}
+        {{ render_field(form.media_type) }}
+    </dl>
+    <p><input type=submit value=Parse>
 </form>
 <pre id="results">
 </pre>
 
-    <script>
-        var result_element = jQuery("#results");
-        var form = jQuery("#hi");
-        form.submit(function() {
-            jQuery.ajax({
-               type: "POST",
-               url: "{{ url_for("classify") }}",
-               data: form.serialize(),
-               success: function(data)
-               {
-                   console.log(data);
-                   result_element.text(JSON.stringify(data, null, 4));
-               }
-            });
-            return false;
+<script>
+    var result_element = jQuery("#results");
+    var form = jQuery("#hi");
+    form.submit(function () {
+        jQuery.ajax({
+            type: "POST",
+            url: "{{ url_for("classify") }}",
+            data: form.serialize(),
+            success: function (data) {
+                result_element.text(JSON.stringify(data, null, 4));
+            }
         });
-    </script>
+        return false;
+    });
+</script>
 </body>
 </html>

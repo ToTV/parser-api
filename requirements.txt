@@ -1,3 +1,4 @@
 wtforms
 guessit
 flask
+enum

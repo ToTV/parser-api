@@ -5,7 +5,7 @@
 from __future__ import unicode_literals, absolute_import
 from enum import Enum
 from flask import Flask, request, jsonify, render_template
-from wtforms import Form, BooleanField, StringField, validators, SelectField
+from wtforms import Form, StringField, validators, SelectField
 import guessit
 
 
@@ -22,8 +22,6 @@ class ClassifyForm(Form):
         (MediaTypes.Movie.value, MediaTypes.Movie.name),
         (MediaTypes.Unknown.value, MediaTypes.Unknown.name)
     ], default=MediaTypes.TV.value)
-
-
 
 
 app = Flask("parser")
@@ -49,6 +47,7 @@ def classify():
         else:
             data = guessit.guess_movie_info(release_name, {})
         return jsonify(data)
+
 
 if __name__ == "__main__":
     app.run()
