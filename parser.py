@@ -53,12 +53,13 @@ def classify():
         form = ClassifyForm(request.form)
     if form.validate():
         release_name = form.release_name.data
+        options = {'name_only': True}
         if form.media_type.data == "unknown":
-            data = guessit.guess_file_info(release_name, {})
+            data = guessit.guess_file_info(release_name, options=options)
         elif form.media_type.data == "tv":
-            data = guessit.guess_episode_info(release_name, {})
+            data = guessit.guess_episode_info(release_name, options=options)
         else:
-            data = guessit.guess_movie_info(release_name, {})
+            data = guessit.guess_movie_info(release_name, options=options)
         try:
             jsonify()
             return json.dumps(data, default=json_serial)
